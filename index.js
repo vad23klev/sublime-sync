@@ -107,7 +107,7 @@ var start = function() {
       }
       return true;
     }
-  }, function(filename) {
+  }, function(env,filename) {
 
     // See if it matches 'ignore_regexes'
     var matches = false;
