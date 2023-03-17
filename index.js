@@ -80,8 +80,11 @@ var start = function() {
           console.log(colors.red(err));
         }
         else if(res.data) {
+          var now = new Date();
+          var minutes = '0' + now.getMinutes();
+          var time = now.getHours() + ':' + minutes.substr(-2);
           var numberOfItems = res.data.split('\n').length - 1;
-          console.log(colors.green('Succesfully uploaded ' + numberOfItems + ' file(s)'));
+          console.log(colors.green(time + ' Succesfully uploaded ' + numberOfItems + ' file(s)'));
         }
       });
     }
@@ -122,17 +125,19 @@ var start = function() {
     // Upload if it doesn't match the ignorePatterns
     if(!matches) {
 
-      console.log('Change detected: ' + colors.magenta(filename));
+      var now = new Date();
+      var minutes = '0' + now.getMinutes();
+      var time = now.getHours() + ':' + minutes.substr(-2);
+      console.log(time + ' Change detected: ' + colors.magenta(filename));
 
       var isDirectory = false;
       var exists = fs.existsSync('./' + filename);
       var destination = remotePath + '/' + filename;
-
       destination = destination.replace(/\\/g,'/');
       destination = destination.replace(/\/\/+/g, '/');
 
       if(exists) {
-        console.log('Uploading to -> ' + destination);
+        console.log(time + ' Uploading to -> ' + destination);
         isDirectory = fs.lstatSync('./' + filename).isDirectory();
         if(isDirectory) {
           syncDirectory(filename,destination);
@@ -140,7 +145,7 @@ var start = function() {
           sftp.put('./' + filename, destination);
         }
       } else {
-        console.log('Delete detected on ' + filename + '. Deleting server file -> ' + destination);
+        console.log(time + ' Delete detected on ' + filename + '. Deleting server file -> ' + destination);
         sftp.rm(destination);
         sftp.raw('rm '+ destination + '/*');
         sftp.raw('rmdir ' + destination);
