@@ -92,9 +92,9 @@ var start = function() {
   };
   setTimeout(scan, scanInterval);
 
-
   // Initiate the watcher
   watch('.', {
+    recursive: true,
     filter: function(filename) {
       // Don't watch file if it matches 'ignore_regexes'
       var matches = false;
